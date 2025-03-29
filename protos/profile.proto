@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package profile;
+
+service ProfileService {
+  rpc GetProfile (GetProfileRequest) returns (ProfileResponse) {}
+  rpc UpdateProfile (UpdateProfileRequest) returns (ProfileResponse) {}
+  rpc UpdatePhoto (UpdatePhotoRequest) returns (ProfileResponse) {}
+  rpc AddInterest (AddInterestRequest) returns (ProfileResponse) {}
+  rpc RemoveInterest (RemoveInterestRequest) returns (ProfileResponse) {}
+}
+
+message GetProfileRequest {
+  string userId = 1;
+}
+
+message UpdateProfileRequest {
+  string userId = 1;
+  string name = 2;
+  string description = 3;
+  string meetingGoal = 4;
+}
+
+message UpdatePhotoRequest {
+  string userId = 1;
+  bytes photo = 2;
+}
+
+message AddInterestRequest {
+  string userId = 1;
+  string interest = 2;
+}
+
+message RemoveInterestRequest {
+  string userId = 1;
+  string interest = 2;
+}
+
+message ProfileResponse {
+  bool success = 1;
+  User user = 2;
+  string error = 3;
+}
+
+message User {
+  string id = 1;
+  string email = 2;
+  string name = 3;
+  string photo = 4;
+  repeated string interests = 5;
+  string description = 6;
+  string meetingGoal = 7;
+  bool isNewUser = 8;
+} 
