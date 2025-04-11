@@ -34,7 +34,7 @@
     "name": "Иван Иванов",
     "email": "ivan@example.com",
     "password": "password123",
-    "avatar": "https://example.com/avatar.jpg"
+    "avatar": "https://example.com/avatar.jpg" // Необязательное поле
   }
   ```
 - **Успешный ответ**:
@@ -141,14 +141,14 @@
 
 ## Модель пользователя
 
-```typescript
+```javascript
 {
-  name: string;           // Имя пользователя
-  email: string;          // Email (уникальный)
-  password: string;       // Пароль (хранится в хешированном виде)
-  avatar: string;         // URL аватара (по умолчанию предоставляется)
-  interests: string[];    // Массив интересов (пустой по умолчанию)
-  createdAt: Date;        // Дата создания
-  updatedAt: Date;        // Дата обновления
+  name: String,           // Имя пользователя
+  email: String,          // Email (уникальный)
+  password: String,       // Пароль (хранится в хешированном виде)
+  avatar: String,         // URL аватара (по умолчанию предоставляется)
+  interests: [String],    // Массив интересов (пустой по умолчанию)
+  createdAt: Date,        // Дата создания
+  updatedAt: Date         // Дата обновления
 }
 ``` 

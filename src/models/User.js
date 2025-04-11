@@ -1,20 +1,8 @@
-import mongoose, { Document, Schema } from 'mongoose';
+import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 
-// Интерфейс для модели пользователя
-export interface IUser extends Document {
-  name: string;
-  email: string;
-  password: string;
-  avatar?: string;
-  interests: string[];
-  createdAt: Date;
-  updatedAt: Date;
-  comparePassword: (candidatePassword: string) => Promise<boolean>;
-}
-
 // Схема пользователя
-const userSchema = new Schema<IUser>(
+const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -57,16 +45,16 @@ userSchema.pre('save', async function (next) {
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
     next();
-  } catch (error: any) {
+  } catch (error) {
     next(error);
   }
 });
 
 // Метод для сравнения паролей
-userSchema.methods.comparePassword = async function (candidatePassword: string): Promise<boolean> {
+userSchema.methods.comparePassword = async function (candidatePassword) {
   return bcrypt.compare(candidatePassword, this.password);
 };
 
 // Экспорт модели
-const User = mongoose.model<IUser>('User', userSchema);
+const User = mongoose.model('User', userSchema);
 export default User; 

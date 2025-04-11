@@ -1,6 +1,5 @@
-import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import User, { IUser } from '../models/User';
+import User from '../models/User.js';
 
 // Секретный ключ для JWT
 const JWT_SECRET = process.env.JWT_SECRET || 'tatcon-secret-key';
@@ -8,12 +7,12 @@ const JWT_SECRET = process.env.JWT_SECRET || 'tatcon-secret-key';
 const JWT_EXPIRES_IN = '14d';
 
 // Создание JWT токена
-const generateToken = (id: string): string => {
+const generateToken = (id) => {
   return jwt.sign({ id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
 };
 
 // Регистрация нового пользователя
-export const register = async (req: Request, res: Response) => {
+export const register = async (req, res) => {
   try {
     const { name, email, password, avatar } = req.body;
 
@@ -37,7 +36,7 @@ export const register = async (req: Request, res: Response) => {
     });
 
     // Создаем токен
-    const token = generateToken(user._id.toString());
+    const token = generateToken(user._id);
 
     // Отправляем ответ без пароля
     res.status(201).json({
@@ -52,13 +51,13 @@ export const register = async (req: Request, res: Response) => {
         createdAt: user.createdAt
       }
     });
-  } catch (error: any) {
+  } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
 // Авторизация пользователя
-export const login = async (req: Request, res: Response) => {
+export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -80,7 +79,7 @@ export const login = async (req: Request, res: Response) => {
     }
 
     // Создаем токен
-    const token = generateToken(user._id.toString());
+    const token = generateToken(user._id);
 
     // Отправляем ответ без пароля
     res.status(200).json({
@@ -95,16 +94,16 @@ export const login = async (req: Request, res: Response) => {
         createdAt: user.createdAt
       }
     });
-  } catch (error: any) {
+  } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
 // Получение данных о текущем пользователе
-export const getCurrentUser = async (req: Request, res: Response) => {
+export const getCurrentUser = async (req, res) => {
   try {
     // Пользователь уже добавлен в req.user через middleware аутентификации
-    const user = req.user as IUser;
+    const user = req.user;
 
     res.status(200).json({
       success: true,
@@ -117,15 +116,15 @@ export const getCurrentUser = async (req: Request, res: Response) => {
         createdAt: user.createdAt
       }
     });
-  } catch (error: any) {
+  } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
 // Обновление данных пользователя
-export const updateUserProfile = async (req: Request, res: Response) => {
+export const updateUserProfile = async (req, res) => {
   try {
-    const user = req.user as IUser;
+    const user = req.user;
     const { name, avatar, interests } = req.body;
 
     // Обновляем только предоставленные поля
@@ -146,7 +145,7 @@ export const updateUserProfile = async (req: Request, res: Response) => {
         createdAt: user.createdAt
       }
     });
-  } catch (error: any) {
+  } catch (error) {
     res.status(500).json({ message: error.message });
   }
 }; 

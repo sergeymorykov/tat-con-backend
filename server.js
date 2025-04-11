@@ -2,7 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import userRoutes from './src/routes/userRoutes';
+import userRoutes from './src/routes/userRoutes.js';
 
 // Загрузка переменных окружения
 dotenv.config();
@@ -14,7 +14,7 @@ app.use(cors());
 app.use(express.json());
 
 // Подключение к MongoDB
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://87.242.87.72:27017/tatcon';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/tatcon';
 
 mongoose.connect(MONGODB_URI)
   .then(() => {
@@ -41,7 +41,7 @@ app.get('/', (req, res) => {
 });
 
 // Обработка ошибок
-app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
+app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ message: 'Что-то пошло не так!' });
 });
@@ -50,4 +50,4 @@ app.use((err: Error, req: express.Request, res: express.Response, next: express.
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Сервер запущен на порту ${PORT}`);
-}); 
+});
